@@ -8,6 +8,33 @@ type TerraformProxyRepositoryApiRequest = TerraformProxyRepository
 // used for creating or updating a Terraform hosted repository.
 type TerraformHostedRepositoryApiRequest = TerraformHostedRepository
 
+// TerraformGroupRepositoryApiRequest represents the request body
+// used for creating or updating a Terraform group repository.
+type TerraformGroupRepositoryApiRequest = TerraformGroupRepository
+
+// TerraformAttributes represents terraform-specific repository settings.
+type TerraformAttributes struct {
+	// Indicates if this repository requires authentication overriding anonymous access.
+	RequireAuthentication bool `json:"requireAuthentication"`
+}
+
+// TerraformGroupRepository represents the configuration of a Terraform group repository in Nexus.
+type TerraformGroupRepository struct {
+	// Repository name
+	Name string `json:"name"`
+
+	// Whether the repository is online
+	Online bool `json:"online"`
+
+	Group   `json:"group"`
+	Storage `json:"storage"`
+
+	Terraform TerraformAttributes `json:"terraform"`
+
+	// Cleanup policy configuration (optional)
+	*Cleanup `json:"cleanup,omitempty"`
+}
+
 // TerraformProxyRepository represents the configuration of a Terraform proxy repository in Nexus.
 type TerraformProxyRepository struct {
 	// Repository name
@@ -29,7 +56,6 @@ type TerraformProxyRepository struct {
 	// Cleanup policy configuration (optional)
 	*Cleanup `json:"cleanup,omitempty"`
 }
-
 
 // TerraformSigningAttributes represents terraformSigning section
 // required by TerraformHostedRepositoryApiRequest.
@@ -60,4 +86,3 @@ type TerraformHostedRepository struct {
 	// Swagger: TerraformSigningAttributes (required)
 	TerraformSigning TerraformSigningAttributes `json:"terraformSigning"`
 }
-
